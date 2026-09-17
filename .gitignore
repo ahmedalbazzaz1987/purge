@@ -1,0 +1,9 @@
+build/
+*.zip
+.DS_Store
+*.swp
+*.o
+*.swiftmodule
+*.swiftdoc
+.build/
+DerivedData/

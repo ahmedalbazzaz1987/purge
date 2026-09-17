@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+    <key>CFBundleName</key>
+    <string>Purge</string>
+    <key>CFBundleDisplayName</key>
+    <string>Purge</string>
+    <key>CFBundleExecutable</key>
+    <string>Purge</string>
+    <key>CFBundleIdentifier</key>
+    <string>__BUNDLE_ID__</string>
+    <key>CFBundlePackageType</key>
+    <string>APPL</string>
+    <key>CFBundleShortVersionString</key>
+    <string>__VERSION__</string>
+    <key>CFBundleVersion</key>
+    <string>__VERSION__</string>
+    <key>CFBundleIconFile</key>
+    <string>AppIcon</string>
+    <key>CFBundleInfoDictionaryVersion</key>
+    <string>6.0</string>
+    <key>LSMinimumSystemVersion</key>
+    <string>__MIN_MACOS__</string>
+    <key>LSApplicationCategoryType</key>
+    <string>public.app-category.utilities</string>
+    <key>NSHighResolutionCapable</key>
+    <true/>
+    <key>NSSupportsAutomaticTermination</key>
+    <true/>
+    <key>NSSupportsSuddenTermination</key>
+    <false/>
+    <key>NSHumanReadableCopyright</key>
+    <string>Local-only disk cleaner. No telemetry, no account, no background process.</string>
+    <key>NSAppleEventsUsageDescription</key>
+    <string>Purge asks Finder to move items to the Trash so they can be restored.</string>
+    <key>NSDesktopFolderUsageDescription</key>
+    <string>Only to report large files you asked Purge to look for. Purge never removes anything from the Desktop on its own.</string>
+    <key>NSDocumentsFolderUsageDescription</key>
+    <string>Only to report large or duplicate files you asked Purge to look for.</string>
+    <key>NSDownloadsFolderUsageDescription</key>
+    <string>Only to report large or duplicate files you asked Purge to look for.</string>
+    <key>NSAppTransportSecurity</key>
+    <dict>
+        <key>NSAllowsArbitraryLoads</key>
+        <false/>
+    </dict>
+</dict>
+</plist>

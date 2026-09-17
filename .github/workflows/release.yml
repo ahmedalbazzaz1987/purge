@@ -1,0 +1,68 @@
+name: Release
+
+# Publishes a build whenever a version tag is pushed:
+#     git tag v1.0.1 && git push origin v1.0.1
+#
+# The zip this produces is exactly what Purge's in-app updater downloads.
+
+on:
+  push:
+    tags:
+      - 'v*'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    runs-on: macos-14
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Read version from tag
+        id: meta
+        run: |
+          TAG="${GITHUB_REF_NAME}"
+          VERSION="${TAG#v}"
+          echo "tag=$TAG"         >> "$GITHUB_OUTPUT"
+          echo "version=$VERSION" >> "$GITHUB_OUTPUT"
+
+      - name: Keep build.sh in step with the tag
+        run: |
+          sed -i '' "s/^VERSION=\".*\"/VERSION=\"${{ steps.meta.outputs.version }}\"/" build.sh
+          sed -i '' "s/static let version = \".*\"/static let version = \"${{ steps.meta.outputs.version }}\"/" Sources/Models.swift
+          grep -n 'VERSION=' build.sh | head -1
+          grep -n 'static let version' Sources/Models.swift
+
+      - name: Build
+        run: |
+          chmod +x build.sh
+          ./build.sh --release
+
+      - name: Name the artifact
+        id: artifact
+        run: |
+          ZIP=$(ls build/*.zip | head -1)
+          echo "path=$ZIP" >> "$GITHUB_OUTPUT"
+          echo "name=$(basename "$ZIP")" >> "$GITHUB_OUTPUT"
+
+      - name: Publish release
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: ${{ steps.meta.outputs.tag }}
+          name: Purge ${{ steps.meta.outputs.version }}
+          files: ${{ steps.artifact.outputs.path }}
+          generate_release_notes: true
+          body: |
+            ## Purge ${{ steps.meta.outputs.version }}
+
+            Built on GitHub's macOS runners with the Command Line Tools — no Xcode project, no dependencies.
+
+            **Installing:** download the zip below, unpack it, and drag `Purge.app` to your Applications folder.
+            On first launch macOS will say the developer cannot be verified, because this build is signed
+            ad-hoc rather than with a paid Developer ID. Right-click the app → Open → Open. Once only.
+
+            **Already running Purge?** Open it and go to Updates — it will find this release, verify it,
+            and replace itself.
